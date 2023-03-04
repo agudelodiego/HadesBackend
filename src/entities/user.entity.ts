@@ -1,44 +1,63 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from "./order.entity";
+import { ShoppingCart } from "./shoppincart.entity";
 
 
 @Entity({name:'users'})
 export class User {
+
   @PrimaryGeneratedColumn()
-  id:number
+  id: number
 
   @Column({unique:true})
-  uid:string
+  uid: string
 
   @Column({unique:true})
-  username:string
+  username: string
 
   @Column({unique:true})
-  email:string
+  email: string
 
   @Column()
-  password:string
+  password: string
 
   @Column({nullable:true})
-  authStrategy:string
+  authStrategy: string
 
   @Column({
     type:'datetime',
     default: () => 'CURRENT_TIMESTAMP'
   })
-  createdAt:Date
+  createdAt: Date
 
   @Column({default:false})
-  emailVerified:boolean
+  emailVerified: boolean
 
   @Column({nullable:true})
-  billingAddress:string
+  billingAddress: string
 
   @Column({nullable:true})
-  shipmentAddress:string
+  shipmentAddress: string
 
   @Column({nullable:true})
-  contry:string
+  contry: string
 
   @Column({nullable:true})
-  phone:string
+  phone: string
+
+  @Column({default:false})
+  isAdmin: boolean
+
+  //! Pending
+  @OneToMany(() => ShoppingCart, shoppingcart => shoppingcart.user)
+  shoppingCarts: ShoppingCart[]
+
+  //! Pending
+  @OneToMany(() => Order , order => order.user)
+  orders: Order[]
+
+  //! Pending
+  @Column({nullable:true})
+  photo: string
+
 }
