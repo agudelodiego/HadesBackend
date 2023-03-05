@@ -1,5 +1,6 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Category } from "./category.entity";
+import { Image } from "./image.entity";
 
 @Entity({name:'products'})
 export class Product {
@@ -29,7 +30,7 @@ export class Product {
   @JoinTable()
   categories: Category[]
 
-  //! Pending
-  @Column({nullable:true})
-  images: string
+  @OneToMany(()=> Image, image => image.product)
+  images: Image[]
+  
 }
