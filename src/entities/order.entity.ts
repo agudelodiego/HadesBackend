@@ -1,32 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
+import { ShoppingCart } from "./shoppincart.entity";
 
-@Entity({name:'orders'})
+
+export type OrderDocument = HydratedDocument<Order>
+@Schema()
 export class Order {
 
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column({default:'pending'})
+  @Prop({default:'pending'})
   state:string
 
-  @Column({nullable:true})
+  @Prop({required:true})
   billingAddress: string
 
-  @Column({nullable:true})
+  @Prop()
   shipmentAddress: string
 
-  @Column({
-    type:'datetime',
-    default: () => 'CURRENT_TIMESTAMP'
-  })
+  @Prop({ default: Date.now() })
   date: Date
 
-  //! Pending
-  @Column({nullable:true})
-  shoppingCart:string
-
-  //! Pending
-  @Column({nullable:true})
-  user:string
+  @Prop({ 
+    type: [{ 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'ShoppingCart' 
+    }] 
+  })
+  shoppingCarts:ShoppingCart[]
 
 }
+export const OrderSchema = SchemaFactory.createForClass(Order)

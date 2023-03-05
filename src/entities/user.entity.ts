@@ -1,6 +1,4 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Order } from "./order.entity";
-import { ShoppingCart } from "./shoppincart.entity";
 
 
 @Entity({name:'users'})
@@ -47,14 +45,6 @@ export class User {
 
   @Column({default:false})
   isAdmin: boolean
-
-  //! Pending
-  @OneToMany(() => ShoppingCart, shoppingcart => shoppingcart.user)
-  shoppingCarts: ShoppingCart[]
-
-  //! Pending
-  @OneToMany(() => Order , order => order.user)
-  orders: Order[]
 
   //! Pending
   @Column({nullable:true})

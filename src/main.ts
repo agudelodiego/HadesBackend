@@ -5,8 +5,9 @@ import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  let PORT = app.get(ConfigService).get('PORT')
   app.use(cookieParser())
-  await app.listen(PORT || 3000)
+
+  let PORT = process.env.PORT
+  await app.listen(PORT || 5000)
 }
 bootstrap();

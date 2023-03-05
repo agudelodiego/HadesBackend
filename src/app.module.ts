@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule  } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
 import { Order } from './entities/order.entity';
@@ -11,32 +12,31 @@ import { User } from './entities/user.entity';
 @Module({
   imports: [
 
+    //! This module allow us access to enviorement variables
     ConfigModule.forRoot({
       envFilePath: '.env.dev',
       isGlobal:true
     }),
 
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('MYSQL_HOST'),
-        port: parseInt(configService.get('MYSQL_PORT')),
-        username: configService.get('MYSQL_USERNAME'),
-        password: configService.get('MYSQL_PASSWORD'),
-        database: configService.get('MYSQL_DB_NAME'),
-        entities: [
-          User,
-          Order,
-          Product,
-          Category,
-          ShoppingCart,
-        ],
-        synchronize: true,
-      }),
-      inject: [ConfigService],
-    })
+    //! Congiguration for mysql
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.MYSQL_HOST,
+      port: parseInt(process.env.MYSQL_PORT),
+      username: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DB_NAME,
+      entities: [
+        User,
+        Order,
+        Product,
+        Category,
+      ],
+      synchronize: Boolean(process.env.DEVELOPMENT),
+    }),
 
+    //! Configuration for mongodb
+    MongooseModule.forRoot(process.env.MONGODB_URI)
   ],
 
   controllers: [],

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Category } from "./category.entity";
 
 @Entity({name:'products'})
 export class Product {
@@ -24,9 +25,9 @@ export class Product {
   @Column()
   stock: number
 
-  //! Pending
-  @Column({nullable:true})
-  categories: string
+  @ManyToMany(()=> Category, category => category.products)
+  @JoinTable()
+  categories: Category[]
 
   //! Pending
   @Column({nullable:true})
