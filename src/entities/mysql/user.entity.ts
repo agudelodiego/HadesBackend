@@ -8,9 +8,6 @@ export class User {
   id: number
 
   @Column({unique:true})
-  uid: string
-
-  @Column({unique:true})
   username: string
 
   @Column({unique:true})
@@ -43,8 +40,8 @@ export class User {
   @Column({nullable:true})
   phone: string
 
-  @Column({default:false})
-  isAdmin: boolean
+  @Column({default:'user'})
+  role: string
 
   //! Pending
   @Column({nullable:true})

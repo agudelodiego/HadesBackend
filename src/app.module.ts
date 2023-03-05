@@ -2,11 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule  } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Category } from './entities/category.entity';
-import { Order } from './entities/order.entity';
-import { Product } from './entities/product.entity';
-import { ShoppingCart } from './entities/shoppincart.entity';
-import { User } from './entities/user.entity';
+import { Category } from './entities/mysql/category.entity';
+import { Order } from './entities/mongo/order.model';
+import { Product } from './entities/mysql/product.entity';
+import { User } from './entities/mysql/user.entity';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { FirebaseModule } from './firebase/firebase.module';
+import { Image } from './entities/mysql/image.entity';
 
 
 @Module({
@@ -29,6 +32,7 @@ import { User } from './entities/user.entity';
       entities: [
         User,
         Order,
+        Image,
         Product,
         Category,
       ],
@@ -36,7 +40,13 @@ import { User } from './entities/user.entity';
     }),
 
     //! Configuration for mongodb
-    MongooseModule.forRoot(process.env.MONGODB_URI)
+    MongooseModule.forRoot(process.env.MONGODB_URI),
+
+    UsersModule,
+
+    AuthModule,
+
+    FirebaseModule
   ],
 
   controllers: [],
